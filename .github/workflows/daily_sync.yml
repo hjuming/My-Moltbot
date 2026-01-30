@@ -3,7 +3,7 @@ name: Daily Sync and WEDO Monitor
 on:
   schedule:
     - cron: '10 1 * * *' # 台灣時間 09:10
-  workflow_dispatch: {} # 允許手動執行
+  workflow_dispatch: {}
 
 jobs:
   sync-and-monitor:
@@ -21,7 +21,7 @@ jobs:
 
       - name: Run update_repos.sh
         env:
-          MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
+          # 使用全域讀取鑰匙獲取清單
           GITHUB_TOKEN_READ: ${{ secrets.GITHUB_TOKEN_READ }}
         run: |
           ./scripts/update_repos.sh
@@ -33,7 +33,7 @@ jobs:
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           SINCE="${TODAY}T00:00:00Z"
-          echo "Checking commits in wedo-website since $SINCE"
+          echo "Checking commits since $SINCE"
           resp=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN_READ" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
           if [ "$resp" = "[]" ] || [ -z "$resp" ]; then
             echo "status=NONE" >> $GITHUB_OUTPUT
@@ -45,6 +45,7 @@ jobs:
 
       - name: Update LOG and Push
         env:
+          # 使用專屬寫入鑰匙推送更新
           MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
           WEDO_STATUS: ${{ steps.wedo_check.outputs.status }}
           WEDO_URL: ${{ steps.wedo_check.outputs.url }}
@@ -64,10 +65,11 @@ jobs:
           git config user.email "moltbot-action@example.com"
           git add .
           git commit -m "Automated Sync: $TODAY" || exit 0
+          # 強制使用 MANAGEMENT_TOKEN 進行推送
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
 
-          # Telegram Notification
+          # Telegram 通知
           MSG="🚀 Moltbot 任務報告\n📅 日期: $TODAY\n📊 $REPORT_MSG"
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d chat_id="${TELEGRAM_CHAT_ID}" \
