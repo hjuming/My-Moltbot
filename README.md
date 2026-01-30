@@ -1,2 +1,39 @@
-# My-Moltbot
-活在Zeabur的龍蝦機器人
+# 📝 My-Moltbot：龍蝦機器人 (Moltbot) 管理與檔案核心
+
+## 致 Antigravity/接手開發者
+本專案為活在 Zeabur 環境中的「龍蝦機器人」後端資料庫與自動化中樞。它不直接運行 Bot 邏輯，而是作為儲存庫、知識庫與自動化排程器，透過 Telegram 指令與 GitHub Actions 進行連動。
+
+## 🏗️ 系統架構
+- **指令來源**：Telegram (用戶與 Bot 互動)。
+- **執行環境**：Zeabur (運行中的 Node.js/Python 機器人環境)。
+- **資料中樞**：GitHub (本倉庫 My-Moltbot)，負責存放專案清單、日誌及研究文件。
+- **自動化**：GitHub Actions，負責定時監測、同步 repo 狀態及發送日報。
+
+## 🔑 環境變數 (Secrets)
+設定在 GitHub 倉庫的 `Settings > Secrets and variables > Actions` 中，必須配置以下四組變數，否則自動化流程將失效：
+
+| 變數名稱 | 類型 | 說明 |
+| :--- | :--- | :--- |
+| `MANAGEMENT_TOKEN` | PAT (Fine-grained) | 具備本專案的 Read/Write 權限，用於推送自動化變更。 |
+| `READ_ONLY_PAT` | PAT (Classic) | 具備 repo 權限。用於獲取帳戶下所有 (43+) 專案的清單及監測其他私有專案。 |
+| `TELEGRAM_BOT_TOKEN` | Token | 龍蝦機器人的 API Token。 |
+| `TELEGRAM_CHAT_ID` | ID | 接收通知與日報的指定 Telegram 頻道/用戶 ID。 |
+
+## 🤖 自動化工作流 (GitHub Actions)
+
+### Daily Sync and WEDO Monitor (`daily_sync.yml`)
+- **觸發時間**：每天 01:10 UTC (台灣時間 09:10) 或手動觸發。
+- **執行任務**：
+  1. 調用 `scripts/update_repos.sh` 更新 `research/GITHUB_REPOS.md`。
+  2. 檢查 `hjuming/wedo-website` 的當日提交狀態。
+  3. 將結果紀錄於 `research/LOG.md` 並透過 Telegram 發送摘要回報。
+
+## ⚠️ 重要注意事項 (Maintenance)
+- **防止無限迴圈**：由於 Action 會推播變更回本倉庫，所有由機器人產生的 commit 必須包含 `[skip ci]` 關鍵字，以防止再次觸發 Action 造成循環。
+- **路徑依賴**：腳本位於 `scripts/`，產出的文件位於 `research/`。修改目錄結構時，請同步更新 `.github/workflows/daily_sync.yml`。
+- **權限問題**：如果出現 `401 Bad credentials`，請優先檢查 `READ_ONLY_PAT` 是否過期，或名稱是否被 GitHub 保留關鍵字（如 `GITHUB_` 前綴）阻擋。
+
+## 📂 目錄說明
+- `scripts/`：存放執行邏輯的 `.sh` 腳本。
+- `research/`：存放自動化產出的 MD 文件、專案清單與歷史日誌。
+- `.github/workflows/`：定義雲端排程任務。
