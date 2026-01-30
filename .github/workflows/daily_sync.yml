@@ -98,19 +98,19 @@ jobs:
           wedo_status = os.environ.get('WEDO_STATUS')
           wedo_url = os.environ.get('WEDO_URL')
           
-          # 構建人性化的訊息
+          # 構建人性化的訊息 (小龍女語氣)
           if wedo_status == "FOUND":
-              wedo_msg = f"✅ **WEDO 網站**：今日有更新！\n🔗 [查看詳細內容]({wedo_url})"
+              wedo_msg = f"✅ **WEDO 網站**：報告老闆，發現新的更新囉！\n🔗 [點我查看詳情]({wedo_url})"
           else:
-              wedo_msg = "💤 **WEDO 網站**：今日無動靜"
+              wedo_msg = "💤 **WEDO 網站**：報告老闆，今天靜悄悄的，沒有動靜。"
 
           message = f"""
-          🦞 **早安！這是龍蝦機器人的每日匯報**
+          🐉 **老闆早安！我是小龍女，來跟您請安了**
           📅 日期：{today}
 
           {wedo_msg}
 
-          _報告完畢，祝您今天工作順心！_
+          _報告完畢！老闆今天也要加油喔！💪_
           """
 
           # 發送請求
