@@ -37,3 +37,12 @@
 - `scripts/`：存放執行邏輯的 `.sh` 腳本。
 - `research/`：存放自動化產出的 MD 文件、專案清單與歷史日誌。
 - `.github/workflows/`：定義雲端排程任務。
+
+## 🛠️ 機器人互動指令預留
+- **指令**：`/report`
+- **用途**：讓用戶從 Telegram 直接調閱 `research/LOG.md` 的最新狀態。
+- **邏輯**：
+  1. 使用 `MANAGEMENT_TOKEN` 透過 GitHub API 讀取本專案檔案。
+  2. 抓取 `LOG.md` 的最後三行文字。
+  3. 將文字回傳至 Telegram。
+- **狀態**：目前已在 GitHub Actions 端實現主動推送，未來可由 Antigravity 實作被動查詢。
