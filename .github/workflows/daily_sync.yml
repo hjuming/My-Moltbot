@@ -2,8 +2,15 @@ name: Daily Sync and WEDO Monitor
 
 on:
   schedule:
-    - cron: '10 1 * * *' # 台灣時間 09:10
+    - cron: '10 1 * * *'
   workflow_dispatch: {}
+  # 修正：只有當非 research 目錄的檔案變動時才觸發 push (手動或自動)
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'research/**'
+      - '.github/workflows/**'
 
 jobs:
   sync-and-monitor:
@@ -21,7 +28,6 @@ jobs:
 
       - name: Run update_repos.sh
         env:
-          # 這裡改用你新設定的 Secret 名稱
           READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
         run: |
           ./scripts/update_repos.sh
@@ -33,15 +39,25 @@ jobs:
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           SINCE="${TODAY}T00:00:00Z"
-          echo "Checking commits since $SINCE"
           resp=$(curl -sSL -H "Authorization: token $READ_ONLY_PAT" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
-          if [ "$resp" = "[]" ] || [ -z "$resp" ]; then
-            echo "status=NONE" >> $GITHUB_OUTPUT
-          else
-            URL=$(echo "$resp" | python3 -c "import sys,json; j=json.load(sys.stdin); print(j[0]['html_url'])")
-            echo "status=FOUND" >> $GITHUB_OUTPUT
-            echo "url=$URL" >> $GITHUB_OUTPUT
-          fi
+          # 將內容存入暫存檔避免環境變數過長
+          echo "$resp" > resp.json
+          python3 - <<'PY'
+import sys, json, os
+try:
+    with open('resp.json', 'r') as f:
+        j = json.load(f)
+    if isinstance(j, list) and len(j) > 0:
+        url = j[0].get('html_url', '')
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f"status=FOUND\nurl={url}\n")
+    else:
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write("status=NONE\n")
+except:
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+        f.write("status=NONE\n")
+PY
 
       - name: Update LOG and Push
         env:
@@ -63,7 +79,8 @@ jobs:
           git config user.name "moltbot-action"
           git config user.email "moltbot-action@example.com"
           git add .
-          git commit -m "Automated Sync: $TODAY" || exit 0
+          # 關鍵：在 commit 訊息加入 [skip ci]，GitHub Actions 看到此標籤就不會再次觸發
+          git commit -m "Automated Sync: $TODAY [skip ci]" || exit 0
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
 
