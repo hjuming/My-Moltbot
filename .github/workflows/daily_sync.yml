@@ -64,14 +64,19 @@ jobs:
           PY
 
       - name: Update LOG and Push
+        if: always()
         env:
           MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
           WEDO_STATUS: ${{ steps.wedo_check.outputs.status }}
           WEDO_URL: ${{ steps.wedo_check.outputs.url }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # 關鍵修正：將 Shell 變數 TODAY 傳入環境變數供 Python 讀取
+          TODAY: ${{ env.TODAY }}
         run: |
+          # 重新定義 TODAY 確保 Shell 環境也有值
           TODAY=$(date +%Y-%m-%d)
+          echo "TODAY=$TODAY" >> $GITHUB_ENV
           mkdir -p research
           if [ "$WEDO_STATUS" = "FOUND" ]; then
             REPORT_MSG="$TODAY WEDO report: $WEDO_URL"
