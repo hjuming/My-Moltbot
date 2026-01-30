@@ -1,55 +1,88 @@
-#!/bin/bash
-set -e
+name: Daily Sync and WEDO Monitor
 
-echo "正在使用 READ_ONLY_PAT 獲取倉庫清單..."
+on:
+  schedule:
+    - cron: '10 1 * * *' # 台灣時間 09:10
+  workflow_dispatch: {}
 
-# 1. 確保目錄存在
-mkdir -p research
+jobs:
+  sync-and-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-# 2. 直接將 API 結果存入實體檔案，避免使用變數或管道傳輸大數據
-curl -s -H "Authorization: token ${READ_ONLY_PAT}" \
-     "https://api.github.com/user/repos?per_page=100" > research/raw_repos.json
+      - name: Ensure scripts executable
+        run: |
+          mkdir -p scripts
+          chmod +x ./scripts/*.sh || true
 
-# 3. 檢查檔案是否為空
-if [ ! -s research/raw_repos.json ]; then
-    echo "❌ 抓取失敗：API 回傳內容為空"
-    exit 1
-fi
+      - name: Run update_repos.sh
+        env:
+          READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
+        run: |
+          ./scripts/update_repos.sh
 
-# 4. 檢查是否包含錯誤訊息 (例如 Bad credentials)
-if grep -q "\"message\"" research/raw_repos.json; then
-    echo "❌ API 授權失敗，內容如下："
-    cat research/raw_repos.json
-    exit 1
-fi
-
-echo "✅ 成功獲取資料，正在產生 Markdown 表格..."
-
-# 5. 讓 Python 直接讀取檔案內容
-python3 - <<'PY'
+      - name: Check WEDO marketing report
+        id: wedo_check
+        env:
+          READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          SINCE="${TODAY}T00:00:00Z"
+          echo "Checking commits in wedo-website since $SINCE"
+          resp=$(curl -sSL -H "Authorization: token $READ_ONLY_PAT" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
+          
+          # 使用 Python 安全解析，若無 commit 則輸出 NONE
+          python3 - <<'PY'
 import sys, json, os
-
 try:
-    file_path = 'research/raw_repos.json'
-    with open(file_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    
-    if isinstance(data, list):
-        with open('research/GITHUB_REPOS.md', 'w', encoding='utf-8') as f:
-            f.write("| 專案名稱 | GitHub 連結 |\n")
-            f.write("| :--- | :--- |\n")
-            for repo in data:
-                name = repo.get('name', 'N/A')
-                url = repo.get('html_url', '#')
-                f.write(f"| {name} | [{url}]({url}) |\n")
-        print("✨ 專案表格已成功更新！")
+    j = json.loads(os.environ.get('RESP', '[]'))
+    if isinstance(j, list) and len(j) > 0:
+        url = j[0].get('html_url', 'No URL found')
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f"status=FOUND\nurl={url}\n")
+        print(f"Found latest commit: {url}")
     else:
-        print("Error: API 回傳格式非列表")
-        sys.exit(1)
-finally:
-    # 任務完成後刪除暫存的 JSON 檔
-    if os.path.exists(file_path):
-        os.remove(file_path)
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write("status=NONE\n")
+        print("No commits found for today.")
+except Exception as e:
+    print(f"Error: {e}")
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+        f.write("status=NONE\n")
 PY
+        env:
+          RESP: ${{ env.resp }} # 注意：這裡我們改用內聯處理更安全
 
-echo "🚀 腳本執行完畢！"
+      - name: Update LOG and Push
+        env:
+          MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
+          WEDO_STATUS: ${{ steps.wedo_check.outputs.status }}
+          WEDO_URL: ${{ steps.wedo_check.outputs.url }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          mkdir -p research
+          if [ "$WEDO_STATUS" = "FOUND" ]; then
+            REPORT_MSG="$TODAY WEDO report: $WEDO_URL"
+          else
+            REPORT_MSG="$TODAY WEDO report: 未生成"
+          fi
+          echo "$REPORT_MSG" >> research/LOG.md
+          
+          git config user.name "moltbot-action"
+          git config user.email "moltbot-action@example.com"
+          git add .
+          git commit -m "Automated Sync: $TODAY" || exit 0
+          git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
+          git push origin HEAD:main
+
+          # Telegram 通知
+          MSG="🚀 Moltbot 任務報告\n📅 日期: $TODAY\n📊 $REPORT_MSG"
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="$MSG"
