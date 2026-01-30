@@ -1,19 +1,17 @@
 #!/bin/bash
 set -e
 
-echo "正在使用 GITHUB_TOKEN_READ 獲取倉庫清單..."
+echo "正在使用 READ_ONLY_PAT 獲取倉庫清單..."
 
-# 1. 獲取資料
-REPOS_JSON=$(curl -s -H "Authorization: token ${GITHUB_TOKEN_READ}" "https://api.github.com/user/repos?per_page=100")
+# 使用你新設定的環境變數 READ_ONLY_PAT
+REPOS_JSON=$(curl -s -H "Authorization: token ${READ_ONLY_PAT}" "https://api.github.com/user/repos?per_page=100")
 
-# 2. 檢查 API 是否成功
 if echo "$REPOS_JSON" | grep -q "\"message\""; then
-    echo "❌ API 授權失敗，請檢查 GITHUB_TOKEN_READ："
+    echo "❌ API 授權失敗，請檢查 READ_ONLY_PAT："
     echo "$REPOS_JSON"
     exit 1
 fi
 
-# 3. 生成 Markdown
 mkdir -p research
 echo "| 專案名稱 | GitHub 連結 |" > research/GITHUB_REPOS.md
 echo "| :--- | :--- |" >> research/GITHUB_REPOS.md
