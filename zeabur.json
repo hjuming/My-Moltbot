@@ -1,0 +1,6 @@
+{
+  "docker": {
+    "image": "ghcr.io/moltbot/clawdbot:main"
+  },
+  "start_command": "node dist/index.js gateway"
+}
