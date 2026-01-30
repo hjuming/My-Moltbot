@@ -1,112 +1,74 @@
 name: Daily Sync and WEDO Monitor
 
 on:
-schedule:
-- cron: '10 1 * * *' # every day at 01:10 UTC
-workflow_dispatch: {}
-
-permissions:
-contents: write
-id-token: write
+  schedule:
+    - cron: '10 1 * * *' # 台灣時間 09:10
+  workflow_dispatch: {} # 允許手動執行
 
 jobs:
-sync-and-monitor:
-runs-on: ubuntu-latest
-steps:
-- name: Checkout repository
-uses: actions/checkout@v4
-with:
-persist-credentials: false
-- name: Ensure scripts executable
-    run: |
-      chmod +x ./scripts/update_repos.sh || true
+  sync-and-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-  - name: Run update_repos.sh to refresh GITHUB_REPOS.md
-    env:
-      MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_READ }}
-    run: |
-      ./scripts/update_repos.sh
+      - name: Ensure scripts executable
+        run: |
+          mkdir -p scripts
+          chmod +x ./scripts/*.sh || true
 
-  - name: Check WEDO marketing report (today)
-    id: wedo_check
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_READ }}
-    run: |
-      set -euo pipefail
-      TODAY=$(date -u +%Y-%m-%d)
-      SINCE="${TODAY}T00:00:00Z"
-      echo "Checking commits since $SINCE"
-      resp=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
-      # Use Python to parse safely
-      python3 - <<'PY'
-import sys, json
-j = json.load(sys.stdin)
-if len(j) > 0:
-print('FOUND')
-print(j[0]['html_url'])
-sys.exit(0)
-else:
-print('NONE')
-sys.exit(2)
-PY
-- name: Update research/LOG.md with WEDO status
-    if: ${{ steps.wedo_check.outcome == 'success' }}
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_READ }}
-    run: |
-      # If previous step found a commit, fetch the latest commit URL
-      TODAY=$(date -u +%Y-%m-%d)
-      SINCE="${TODAY}T00:00:00Z"
-      resp=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
-      url=$(echo "$resp" | python3 -c "import sys,json; j=json.load(sys.stdin); print(j[0]['html_url'] if j else '')")
-      echo "$(date -u +%Y-%m-%d) WEDO report: $url" >> research/LOG.md
-      git config user.name "moltbot-action"
-      git config user.email "moltbot-action@example.com"
-      git add research/LOG.md
-      git commit -m "WEDO: add daily log entry" || echo "No changes to commit"
-      # push using MANAGEMENT_TOKEN secret
-      git remote set-url origin https://${{ secrets.MANAGEMENT_TOKEN }}@github.com/hjuming/My-Moltbot.git
-      git push origin HEAD:main
+      - name: Run update_repos.sh
+        env:
+          MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
+          GITHUB_TOKEN_READ: ${{ secrets.GITHUB_TOKEN_READ }}
+        run: |
+          ./scripts/update_repos.sh
 
-  - name: Mark missing WEDO in LOG
-    if: ${{ steps.wedo_check.outcome == 'failure' }}
-    env:
-      MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
-    run: |
-      TODAY=$(date -u +%Y-%m-%d)
-      echo "${TODAY} WEDO report: 未生成" >> research/LOG.md
-      git config user.name "moltbot-action"
-      git config user.email "moltbot-action@example.com"
-      git add research/LOG.md
-      git commit -m "WEDO: daily missing log" || echo "No changes to commit"
-      git remote set-url origin https://${{ secrets.MANAGEMENT_TOKEN }}@github.com/hjuming/My-Moltbot.git
-      git push origin HEAD:main
+      - name: Check WEDO marketing report
+        id: wedo_check
+        env:
+          GITHUB_TOKEN_READ: ${{ secrets.GITHUB_TOKEN_READ }}
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          SINCE="${TODAY}T00:00:00Z"
+          echo "Checking commits in wedo-website since $SINCE"
+          resp=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN_READ" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
+          if [ "$resp" = "[]" ] || [ -z "$resp" ]; then
+            echo "status=NONE" >> $GITHUB_OUTPUT
+          else
+            URL=$(echo "$resp" | python3 -c "import sys,json; j=json.load(sys.stdin); print(j[0]['html_url'])")
+            echo "status=FOUND" >> $GITHUB_OUTPUT
+            echo "url=$URL" >> $GITHUB_OUTPUT
+          fi
 
-  - name: Send Telegram summary
-    env:
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_READ }}
-    run: |
-      set -euo pipefail
-      # Prepare statuses
-      # Check if last run updated GITHUB_REPOS.md by checking last commit
-      latest_commit=$(git rev-parse --short HEAD || true)
-      wedo_line=$(tail -n 1 research/LOG.md || true)
-      STATUS_TEXT="更新狀態: repo list 更新完成 (commit $latest_commit)\nWEDO: $wedo_line"
-      MSG=$(python3 - <<'PY'
-import os, urllib.parse
-text=os.environ.get('STATUS_TEXT')
-print(urllib.parse.quote(text))
-PY
-)
-# Fallback if above fails
-if [ -z "${MSG:-}" ]; then
-MSG=$(python3 - <<'PY'
-import os, urllib.parse
-print(urllib.parse.quote('更新完成'))
-PY
-)
-fi
-curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d chat_id="${TELEGRAM_CHAT_ID}" -d text="${STATUS_TEXT}"
+      - name: Update LOG and Push
+        env:
+          MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
+          WEDO_STATUS: ${{ steps.wedo_check.outputs.status }}
+          WEDO_URL: ${{ steps.wedo_check.outputs.url }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          mkdir -p research
+          if [ "$WEDO_STATUS" = "FOUND" ]; then
+            REPORT_MSG="$TODAY WEDO report: $WEDO_URL"
+          else
+            REPORT_MSG="$TODAY WEDO report: 未生成"
+          fi
+          echo "$REPORT_MSG" >> research/LOG.md
+          
+          git config user.name "moltbot-action"
+          git config user.email "moltbot-action@example.com"
+          git add .
+          git commit -m "Automated Sync: $TODAY" || exit 0
+          git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
+          git push origin HEAD:main
+
+          # Telegram Notification
+          MSG="🚀 Moltbot 任務報告\n📅 日期: $TODAY\n📊 $REPORT_MSG"
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="$MSG"
