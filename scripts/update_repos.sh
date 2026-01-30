@@ -3,7 +3,7 @@ set -e
 echo "正在獲取倉庫清單..."
 mkdir -p research
 
-# 獲取 JSON 並存入檔案
+# 獲取 JSON 並存入檔案，避免大數據塞爆管道
 curl -s -H "Authorization: token ${READ_ONLY_PAT}" \
      "https://api.github.com/user/repos?per_page=100" > research/raw_repos.json
 
@@ -12,7 +12,6 @@ if [ ! -s research/raw_repos.json ] || grep -q "\"message\"" research/raw_repos.
     exit 1
 fi
 
-# Python 讀取檔案處理資料
 python3 - <<'PY'
 import json, os
 try:
