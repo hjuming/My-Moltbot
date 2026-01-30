@@ -1,0 +1,47 @@
+# GitHub Repositories
+
+| Name | URL |
+|---|---|
+ai-deploy-notebook | https://github.com/hjuming/ai-deploy-notebook
+AI-PM-Designer-Pro | https://github.com/hjuming/AI-PM-Designer-Pro
+Artgo | https://github.com/hjuming/Artgo
+Atlas-WEDO | https://github.com/hjuming/Atlas-WEDO
+awesome-gpt4o-images | https://github.com/hjuming/awesome-gpt4o-images
+Awesome-Nano-Banana-images | https://github.com/hjuming/Awesome-Nano-Banana-images
+book-wedo | https://github.com/hjuming/book-wedo
+chronoframe | https://github.com/hjuming/chronoframe
+disaster-report | https://github.com/hjuming/disaster-report
+everything-claude-code | https://github.com/hjuming/everything-claude-code
+geminilink-app | https://github.com/hjuming/geminilink-app
+hino | https://github.com/hjuming/hino
+hkd-rescue | https://github.com/hjuming/hkd-rescue
+Humanizer-zh-TW | https://github.com/hjuming/Humanizer-zh-TW
+JSimages | https://github.com/hjuming/JSimages
+kazumi | https://github.com/hjuming/kazumi
+lottery | https://github.com/hjuming/lottery
+Manus-AI | https://github.com/hjuming/Manus-AI
+MBTI | https://github.com/hjuming/MBTI
+Miidokoro | https://github.com/hjuming/Miidokoro
+Moltbot | https://github.com/hjuming/Moltbot
+Moon | https://github.com/hjuming/Moon
+MoonTV | https://github.com/hjuming/MoonTV
+My-Moltbot | https://github.com/hjuming/My-Moltbot
+newebpay | https://github.com/hjuming/newebpay
+NMN | https://github.com/hjuming/NMN
+OrionTV | https://github.com/hjuming/OrionTV
+pages-cms | https://github.com/hjuming/pages-cms
+pet-republic-api | https://github.com/hjuming/pet-republic-api
+Pets-wedo | https://github.com/hjuming/Pets-wedo
+rakuchu-jp | https://github.com/hjuming/rakuchu-jp
+seminar | https://github.com/hjuming/seminar
+skills | https://github.com/hjuming/skills
+skills-wedo | https://github.com/hjuming/skills-wedo
+spec-kit | https://github.com/hjuming/spec-kit
+sulcata | https://github.com/hjuming/sulcata
+supabase | https://github.com/hjuming/supabase
+tarot | https://github.com/hjuming/tarot
+TTL | https://github.com/hjuming/TTL
+US-Export-Order | https://github.com/hjuming/US-Export-Order
+wedo-website | https://github.com/hjuming/wedo-website
+Xiaoliuqiu | https://github.com/hjuming/Xiaoliuqiu
+ZHO-nano-banana-Creation | https://github.com/hjuming/ZHO-nano-banana-Creation
