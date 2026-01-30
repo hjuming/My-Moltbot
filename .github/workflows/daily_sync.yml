@@ -21,20 +21,20 @@ jobs:
 
       - name: Run update_repos.sh
         env:
-          # 使用全域讀取鑰匙獲取清單
-          GITHUB_TOKEN_READ: ${{ secrets.GITHUB_TOKEN_READ }}
+          # 這裡改用你新設定的 Secret 名稱
+          READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
         run: |
           ./scripts/update_repos.sh
 
       - name: Check WEDO marketing report
         id: wedo_check
         env:
-          GITHUB_TOKEN_READ: ${{ secrets.GITHUB_TOKEN_READ }}
+          READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           SINCE="${TODAY}T00:00:00Z"
           echo "Checking commits since $SINCE"
-          resp=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN_READ" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
+          resp=$(curl -sSL -H "Authorization: token $READ_ONLY_PAT" "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}")
           if [ "$resp" = "[]" ] || [ -z "$resp" ]; then
             echo "status=NONE" >> $GITHUB_OUTPUT
           else
@@ -45,7 +45,6 @@ jobs:
 
       - name: Update LOG and Push
         env:
-          # 使用專屬寫入鑰匙推送更新
           MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
           WEDO_STATUS: ${{ steps.wedo_check.outputs.status }}
           WEDO_URL: ${{ steps.wedo_check.outputs.url }}
@@ -65,7 +64,6 @@ jobs:
           git config user.email "moltbot-action@example.com"
           git add .
           git commit -m "Automated Sync: $TODAY" || exit 0
-          # 強制使用 MANAGEMENT_TOKEN 進行推送
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
 
