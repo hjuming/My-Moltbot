@@ -38,7 +38,7 @@ jobs:
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           SINCE="${TODAY}T00:00:00Z"
-          # 直接將 API 結果存入檔案，避開第 46 行可能的環境變數錯誤
+          # 改用實體檔案中轉，徹底避開 YAML 第 46 行的語法報錯
           curl -sSL -H "Authorization: token $READ_ONLY_PAT" \
                "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}" > wedo_resp.json
           
@@ -58,7 +58,7 @@ try:
     else:
         with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             f.write("status=NONE\n")
-except Exception as e:
+except Exception:
     with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
         f.write("status=NONE\n")
 PY
@@ -83,7 +83,7 @@ PY
           git config user.name "moltbot-action"
           git config user.email "moltbot-action@example.com"
           git add .
-          # 加入 [skip ci] 確保不會無限觸發 Actions
+          # 加入 [skip ci] 關鍵字，防止機器人推送觸發無限循環
           git commit -m "Automated Sync: $TODAY [skip ci]" || exit 0
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
