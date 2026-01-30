@@ -31,17 +31,22 @@ jobs:
         run: |
           ./scripts/update_repos.sh
 
-      - name: Check WEDO marketing report
+      - name: Check WEDO marketing report and Website Status
         id: wedo_check
         env:
           READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           SINCE="${TODAY}T00:00:00Z"
-          # 使用檔案紀錄 API 結果，避免環境變數過長導致報錯
+          
+          # 1. 檢查 GitHub Commit
           curl -sSL -H "Authorization: token $READ_ONLY_PAT" \
                "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}" > wedo_resp.json
           
+          # 2. 檢查網站死活 (Ping)
+          WEDO_SITE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://www.wedopr.com/ || echo "ERR")
+          echo "WEDO_SITE_STATUS=$WEDO_SITE_STATUS" >> $GITHUB_OUTPUT
+
           python3 - <<'PY'
           import sys, json, os
           try:
@@ -69,21 +74,23 @@ jobs:
           MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
           WEDO_STATUS: ${{ steps.wedo_check.outputs.status }}
           WEDO_URL: ${{ steps.wedo_check.outputs.url }}
+          WEDO_SITE_CODE: ${{ steps.wedo_check.outputs.WEDO_SITE_STATUS }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # 關鍵修正：將 Shell 變數 TODAY 傳入環境變數供 Python 讀取
           TODAY: ${{ env.TODAY }}
         run: |
           # 重新定義 TODAY 確保 Shell 環境也有值
           TODAY=$(date +%Y-%m-%d)
           echo "TODAY=$TODAY" >> $GITHUB_ENV
           mkdir -p research
+          
+          # 紀錄 Log
           if [ "$WEDO_STATUS" = "FOUND" ]; then
             REPORT_MSG="$TODAY WEDO report: $WEDO_URL"
           else
             REPORT_MSG="$TODAY WEDO report: 未生成"
           fi
-          echo "$REPORT_MSG" >> research/LOG.md
+          echo "$REPORT_MSG | Site Status: $WEDO_SITE_CODE" >> research/LOG.md
           
           git config user.name "moltbot-action"
           git config user.email "moltbot-action@example.com"
@@ -102,18 +109,26 @@ jobs:
           today = os.environ.get('TODAY')
           wedo_status = os.environ.get('WEDO_STATUS')
           wedo_url = os.environ.get('WEDO_URL')
+          site_code = os.environ.get('WEDO_SITE_CODE')
           
-          # 構建人性化的訊息 (小龍女語氣)
+          # 構建更新訊息
           if wedo_status == "FOUND":
-              wedo_msg = f"✅ **WEDO 網站**：報告老闆，發現新的更新囉！\n🔗 [點我查看詳情]({wedo_url})"
+              wedo_msg = f"✨ **WEDO 更新**：發現新進度！\n🔗 [查看 Commit]({wedo_url})"
           else:
-              wedo_msg = "💤 **WEDO 網站**：報告老闆，今天靜悄悄的，沒有動靜。"
+              wedo_msg = "💤 **WEDO 更新**：今日靜悄悄，無動靜"
+
+          # 構建網站健康訊息
+          if site_code == "200":
+              health_msg = "✅ **網站監控**：https://www.wedopr.com/ 運作正常 (200 OK)"
+          else:
+              health_msg = f"⚠️ **網站監控**：https://www.wedopr.com/ 異常！狀態碼：{site_code}"
 
           message = f"""
-          🐉 **老闆早安！我是小龍女，來跟您請安了**
+          🐉 **老闆早安！小龍女來請安囉**
           📅 日期：{today}
 
           {wedo_msg}
+          {health_msg}
 
           _報告完畢！老闆今天也要加油喔！💪_
           """
