@@ -43,25 +43,25 @@ jobs:
                "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}" > wedo_resp.json
           
           python3 - <<'PY'
-import sys, json, os
-try:
-    if os.path.exists('wedo_resp.json'):
-        with open('wedo_resp.json', 'r') as f:
-            j = json.load(f)
-        if isinstance(j, list) and len(j) > 0:
-            url = j[0].get('html_url', '')
-            with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                f.write(f"status=FOUND\nurl={url}\n")
-        else:
-            with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                f.write("status=NONE\n")
-    else:
-        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-            f.write("status=NONE\n")
-except Exception:
-    with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-        f.write("status=NONE\n")
-PY
+          import sys, json, os
+          try:
+              if os.path.exists('wedo_resp.json'):
+                  with open('wedo_resp.json', 'r') as f:
+                      j = json.load(f)
+                  if isinstance(j, list) and len(j) > 0:
+                      url = j[0].get('html_url', '')
+                      with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                          f.write(f"status=FOUND\nurl={url}\n")
+                  else:
+                      with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                          f.write("status=NONE\n")
+              else:
+                  with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                      f.write("status=NONE\n")
+          except Exception:
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write("status=NONE\n")
+          PY
 
       - name: Update LOG and Push
         env:
