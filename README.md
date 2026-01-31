@@ -53,3 +53,22 @@
   2. 抓取 `LOG.md` 的最後三行文字。
   3. 將文字回傳至 Telegram。
 - **狀態**：目前已在 GitHub Actions 端實現主動推送，未來可由 Antigravity 實作被動查詢。
+
+## 🔌 Zeabur 機器人核心配置 (Configuration)
+
+為了讓小龍女 (Little Dragon Girl) 在 Zeabur 上正確運作並具備專案協作能力，請參照以下配置檔：
+
+### 1. 🧠 大腦與人設 (Brain & Persona)
+- **檔案位置**：`research/personas/LITTLE_DRAGON_GIRL.md`
+- **用途**：這是她的 System Prompt。請將此檔案內容餵給 LLM，讓她知道自己是誰、該做什麼、以及**絕對不能做什麼** (如 Force Push)。
+
+### 2. 📚 技能手冊 (Skills SOP)
+- **檔案位置**：`research/skills/DATA_PROCESSING_SOP.md`
+- **用途**：教導她如何處理檔案 (CSV, 圖片) 以及如何安全地操作 Git。這是為了防止她再次誤刪倉庫的重要準則。
+
+### 3. 🧰 工具規格 (Tool Specs)
+- **檔案位置**：`research/tools/TOOL_DEFINITIONS.json`
+- **用途**：定義她運行環境所需的 System Packages (如 `tesseract-ocr`) 與 Python Libraries。請確保 Zeabur 的 Docker Image 包含這些依賴。
+
+---
+*專案維護者：MING & Antigravity (Google DeepMind)*

@@ -1,0 +1,47 @@
+{
+  "description": "Definition of tools and environment capabilities required for Little Dragon Girl on Zeabur.",
+  "recommended_runtime": {
+    "language": "python",
+    "version": "3.11+",
+    "base_image": "python:3.11-slim"
+  },
+  "system_packages": [
+    "git",
+    "curl",
+    "wget",
+    "tesseract-ocr",
+    "libtesseract-dev"
+  ],
+  "python_packages": [
+    "requests",
+    "pandas",
+    "PyGithub",
+    "python-telegram-bot",
+    "pillow",
+    "pytesseract",
+    "openai"
+  ],
+  "environment_variables": [
+    "MANAGEMENT_TOKEN",
+    "READ_ONLY_PAT",
+    "TELEGRAM_BOT_TOKEN",
+    "TELEGRAM_CHAT_ID",
+    "OPENAI_API_KEY"
+  ],
+  "tools": [
+    {
+      "name": "git_safe_push",
+      "description": "Safely pushes changes to My-Moltbot research folder only.",
+      "command": "git add research/ && git commit -m 'Update' && git push"
+    },
+    {
+      "name": "fetch_repo_content",
+      "description": "Fetches content from other repos via API or temp clone.",
+      "permissions": ["read-only"]
+    },
+    {
+      "name": "generate_report",
+      "description": "Writes a markdown report to the research directory."
+    }
+  ]
+}
