@@ -15,18 +15,28 @@
   "python_packages": [
     "requests",
     "pandas",
+    "openpyxl",
     "PyGithub",
     "python-telegram-bot",
     "pillow",
     "pytesseract",
-    "openai"
+    "openai",
+    "googlemaps",
+    "beautifulsoup4",
+    "tavily-python",
+    "weasyprint",
+    "markdown"
   ],
   "environment_variables": [
     "MANAGEMENT_TOKEN",
     "READ_ONLY_PAT",
     "TELEGRAM_BOT_TOKEN",
     "TELEGRAM_CHAT_ID",
-    "OPENAI_API_KEY"
+    "OPENAI_API_KEY",
+    "TAVILY_API_KEY",
+    "GOOGLE_MAPS_API_KEY",
+    "GMAIL_ACCOUNT",
+    "GMAIL_APP_PASSWORD"
   ],
   "tools": [
     {
@@ -37,11 +47,31 @@
     {
       "name": "fetch_repo_content",
       "description": "Fetches content from other repos via API or temp clone.",
-      "permissions": ["read-only"]
+      "permissions": [
+        "read-only"
+      ]
     },
     {
       "name": "generate_report",
       "description": "Writes a markdown report to the research directory."
+    },
+    {
+      "name": "web_search",
+      "description": "Uses Tavily or SerpApi to search the live internet.",
+      "api_key_ref": "TAVILY_API_KEY"
+    },
+    {
+      "name": "query_places",
+      "description": "Uses Google Places API to find restaurants, addresses, and reviews.",
+      "api_key_ref": "GOOGLE_MAPS_API_KEY"
+    },
+    {
+      "name": "send_email",
+      "description": "Sends files or summaries via Gmail SMTP.",
+      "env_refs": [
+        "GMAIL_ACCOUNT",
+        "GMAIL_APP_PASSWORD"
+      ]
     }
   ]
 }
