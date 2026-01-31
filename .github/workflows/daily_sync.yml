@@ -31,72 +31,49 @@ jobs:
         run: |
           ./scripts/update_repos.sh
 
-      - name: Check WEDO marketing report and Website Status
-        id: wedo_check
+      - name: Scrape Trending Repos
+        id: scraper
         env:
-          READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          TODAY: ${{ env.TODAY }}
         run: |
-          TODAY=$(date -u +%Y-%m-%d)
-          SINCE="${TODAY}T00:00:00Z"
+          # 1. 執行搜尋腳本
+          ./scripts/update_trending.sh
           
-          # 1. 檢查 GitHub Commit
-          curl -sSL -H "Authorization: token $READ_ONLY_PAT" \
-               "https://api.github.com/repos/hjuming/wedo-website/commits?since=${SINCE}" > wedo_resp.json
-          
-          # 2. 檢查網站死活 (Ping)
-          WEDO_SITE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://www.wedopr.com/ || echo "ERR")
-          echo "WEDO_SITE_STATUS=$WEDO_SITE_STATUS" >> $GITHUB_OUTPUT
-
-          python3 - <<'PY'
-          import sys, json, os
-          try:
-              if os.path.exists('wedo_resp.json'):
-                  with open('wedo_resp.json', 'r') as f:
-                      j = json.load(f)
-                  if isinstance(j, list) and len(j) > 0:
-                      url = j[0].get('html_url', '')
-                      with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                          f.write(f"status=FOUND\nurl={url}\n")
-                  else:
-                      with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                          f.write("status=NONE\n")
-              else:
-                  with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                      f.write("status=NONE\n")
-          except Exception:
-              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                  f.write("status=NONE\n")
-          PY
+          # 2. 檢查是否有產出
+          if [ -f "research/TRENDING_REPOS.md" ]; then
+             echo "HAS_TRENDING=true" >> $GITHUB_OUTPUT
+          else
+             echo "HAS_TRENDING=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Update LOG and Push
         if: always()
         env:
           MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
-          WEDO_STATUS: ${{ steps.wedo_check.outputs.status }}
-          WEDO_URL: ${{ steps.wedo_check.outputs.url }}
-          WEDO_SITE_CODE: ${{ steps.wedo_check.outputs.WEDO_SITE_STATUS }}
+          HAS_TRENDING: ${{ steps.scraper.outputs.HAS_TRENDING }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TODAY: ${{ env.TODAY }}
         run: |
           # 重新定義 TODAY 確保 Shell 環境也有值
           TODAY=$(date +%Y-%m-%d)
-          echo "TODAY=$TODAY" >> $GITHUB_ENV
           mkdir -p research
           
           # 紀錄 Log
-          if [ "$WEDO_STATUS" = "FOUND" ]; then
-            REPORT_MSG="$TODAY WEDO report: $WEDO_URL"
+          if [ "$HAS_TRENDING" = "true" ]; then
+            REPORT_MSG="$TODAY Trending Repos: Updated"
           else
-            REPORT_MSG="$TODAY WEDO report: 未生成"
+            REPORT_MSG="$TODAY Trending Repos: Skipped (Check API Key)"
           fi
-          echo "$REPORT_MSG | Site Status: $WEDO_SITE_CODE" >> research/LOG.md
+          echo "$REPORT_MSG" >> research/LOG.md
           
           git config user.name "moltbot-action"
           git config user.email "moltbot-action@example.com"
-          git add research/LOG.md
+          git add research/
           # 關鍵：[skip ci] 讓 GitHub 知道這是機器人更新，不要再次觸發 Action
-          git commit -m "Automated Sync: $TODAY [skip ci]" || exit 0
+          # 使用 git commit 前先檢查是否有變更
+          git diff --staged --quiet || git commit -m "Automated Sync: $TODAY [skip ci]"
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
 
@@ -107,28 +84,19 @@ jobs:
           bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
           chat_id = os.environ.get('TELEGRAM_CHAT_ID')
           today = os.environ.get('TODAY')
-          wedo_status = os.environ.get('WEDO_STATUS')
-          wedo_url = os.environ.get('WEDO_URL')
-          site_code = os.environ.get('WEDO_SITE_CODE')
+          has_trending = os.environ.get('HAS_TRENDING')
           
           # 構建更新訊息
-          if wedo_status == "FOUND":
-              wedo_msg = f"✨ **WEDO 更新**：發現新進度！\n🔗 [查看 Commit]({wedo_url})"
+          if has_trending == "true":
+              trend_msg = f"🔥 **Github 熱門專案**：已更新！\n🔗 [點我看報告](https://github.com/hjuming/My-Moltbot/blob/main/research/TRENDING_REPOS.md)"
           else:
-              wedo_msg = "💤 **WEDO 更新**：今日靜悄悄，無動靜"
-
-          # 構建網站健康訊息
-          if site_code == "200":
-              health_msg = "✅ **網站監控**：https://www.wedopr.com/ 運作正常 (200 OK)"
-          else:
-              health_msg = f"⚠️ **網站監控**：https://www.wedopr.com/ 異常！狀態碼：{site_code}"
+              trend_msg = "💤 **Repo先知**：今天沒有發現新貨，或是缺了 TAVILY_API_KEY 喔。"
 
           message = f"""
           🐉 **老闆早安！小龍女來請安囉**
           📅 日期：{today}
 
-          {wedo_msg}
-          {health_msg}
+          {trend_msg}
 
           _報告完畢！老闆今天也要加油喔！💪_
           """

@@ -28,12 +28,12 @@
 
 ## 🤖 自動化工作流 (GitHub Actions)
 
-### Daily Sync and WEDO Monitor (`daily_sync.yml`)
+### Repo Scraper & Daily Sync (`daily_sync.yml`)
 - **觸發時間**：每天 01:10 UTC (台灣時間 09:10) 或手動觸發。
 - **執行任務**：
-  1. 調用 `scripts/update_repos.sh` 更新 `research/GITHUB_REPOS.md`。
-  2. 檢查 `hjuming/wedo-website` 的當日提交狀態。
-  3. 將結果紀錄於 `research/LOG.md` 並透過 Telegram 發送摘要回報。
+  1. **蒐集熱門專案**：訪問 [RepoInside](https://repoinside.com/) 抓取最新的優質 GitHub 專案。
+  2. **更新清單**：將蒐集到的專案整合進 `research/GITHUB_REPOS.md` (或新建立 `research/TRENDING_REPOS.md`)。
+  3. **日報推送**：將更新摘要紀錄於 `research/LOG.md` 並透過 Telegram 通知老闆。
 
 ## ⚠️ 重要注意事項 (Maintenance)
 - **防止無限迴圈**：由於 Action 會推播變更回本倉庫，所有由機器人產生的 commit 必須包含 `[skip ci]` 關鍵字，以防止再次觸發 Action 造成循環。
