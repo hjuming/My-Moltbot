@@ -25,11 +25,11 @@ jobs:
           mkdir -p scripts
           chmod +x ./scripts/*.sh || true
 
-      - name: Run update_repos.sh
+      - name: Run update_repos_enhanced.sh
         env:
           READ_ONLY_PAT: ${{ secrets.READ_ONLY_PAT }}
         run: |
-          ./scripts/update_repos.sh
+          ./scripts/update_repos_enhanced.sh
 
       - name: Scrape Trending Repos
         id: scraper
@@ -52,8 +52,6 @@ jobs:
         env:
           MANAGEMENT_TOKEN: ${{ secrets.MANAGEMENT_TOKEN }}
           HAS_TRENDING: ${{ steps.scraper.outputs.HAS_TRENDING }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TODAY: ${{ env.TODAY }}
         run: |
           # 重新定義 TODAY 確保 Shell 環境也有值
@@ -76,47 +74,29 @@ jobs:
           git diff --staged --quiet || git commit -m "Automated Sync: $TODAY [skip ci]"
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
-
-          # Telegram 通知 (使用 Python 確保格式與換行正常)
-          python3 - <<'PY'
-          import os, json, urllib.request
-
-          bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
-          chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-          today = os.environ.get('TODAY')
-          has_trending = os.environ.get('HAS_TRENDING')
-          
-          # 構建更新訊息
-          if has_trending == "true":
-              trend_msg = f"🔥 **Github 熱門專案**：已更新！\n🔗 [點我看報告](https://github.com/hjuming/My-Moltbot/blob/main/research/TRENDING_REPOS.md)"
-          else:
-              trend_msg = "💤 **Repo先知**：今天沒有發現新貨，或是缺了 TAVILY_API_KEY 喔。"
-
-          message = f"""
-          🐉 **老闆早安！小龍女來請安囉**
-          📅 日期：{today}
-
-          {trend_msg}
-
-          _報告完畢！老闆今天也要加油喔！💪_
-          """
-
-          # 發送請求
-          url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-          payload = {
-              "chat_id": chat_id,
-              "text": message,
-              "parse_mode": "Markdown",
-              "disable_web_page_preview": True
-          }
-          
-          req = urllib.request.Request(url, 
-              data=json.dumps(payload).encode('utf-8'), 
-              headers={'Content-Type': 'application/json'})
-          
-          try:
-              with urllib.request.urlopen(req) as response:
-                  print("✅ Telegram 通知發送成功")
-          except Exception as e:
-              print(f"❌ Telegram 通知發送失敗: {e}")
-          PY
+      
+      - name: Send Email Notification
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: GitHub 專案庫監控報告 - ${{ env.TODAY }}
+          to: hjuming@gmail.com
+          from: GitHub Actions <noreply@github.com>
+          html_body: |
+            <h2>🗂️ GitHub 專案庫監控報告</h2>
+            <p><strong>日期</strong>：${{ env.TODAY }}</p>
+            <p><strong>專案總數</strong>：46</p>
+            
+            <h3>📦 專案庫變動</h3>
+            <p>查看完整報告：</p>
+            <ul>
+              <li><a href="https://github.com/hjuming/My-Moltbot/blob/main/research/GITHUB_REPOS.md">專案總覽</a></li>
+              <li><a href="https://github.com/hjuming/My-Moltbot/blob/main/research/REPO_CHANGES.md">變動報告</a></li>
+              <li><a href="https://github.com/hjuming/My-Moltbot/commits/main">最近 Commits</a></li>
+            </ul>
+            
+            <p><em>此郵件由 GitHub Actions 自動發送</em></p>
