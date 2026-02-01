@@ -98,6 +98,26 @@ Zeabur 剛好有《Moltbot 評測：開源 AI 助理的終極指南》這篇文�
 
 這就是我三天的真實經歷。
 
+---
+
+## 🐉 認識主角們
+
+在開始講故事之前，先認識三位主角：
+
+### 小龍女 🐉
+![小龍女](docs/assets/images/LittleDragonGirl.jpg)
+*在 Zeabur 上的 AI 助理，享年 3 天*
+
+### 神雕大俠 🦅  
+![神雕大俠](docs/assets/images/TheCondorHero.jpg)
+*Cursor AI - 真正的開發夥伴*
+
+### OpenClawd 🦞
+![OpenClawd](docs/assets/images/moltbot.jpg)
+*改變世界的夢想，尚未實現的承諾*
+
+---
+
 我在 Zeabur 上架了一個 OpenClawd（當時還叫 Moltbot），取名叫「小龍女」。
 
 然後開始了三天的......除錯之旅。
@@ -117,6 +137,12 @@ Zeabur 的一鍵部署確實方便，大概 10 分鐘就跑起來了。
 4. 配對完成
 
 小龍女第一次回覆「收到，老闆」的時候，我還滿興奮的。
+
+![小龍女在 Telegram 的回應](docs/assets/images/Telegram.png)
+*小龍女充滿元氣的回應，讓人充滿期待*
+
+![小龍女確認工作任務](docs/assets/images/telegram-at.jpg)
+*認真確認工作任務的小龍女*
 
 ### 第一個任務：資料庫檢查
 
@@ -371,6 +397,11 @@ GitHub Actions → Email 通知
 設置時間：5 分鐘  
 成本：$0  
 穩定性：100%  
+
+**結果**：完美運作，每天早上 09:10 準時收到報告。
+
+![小龍女的每日 Email 問候](docs/assets/images/email-notification.png)
+*雖然她在 Zeabur 上休眠了，但精神透過 Email 延續 - 每天早上的溫暖問候*
 維護需求：零  
 
 ---
