@@ -18,6 +18,7 @@
 | kazumi | [https://github.com/hjuming/kazumi](https://github.com/hjuming/kazumi) |
 | lottery | [https://github.com/hjuming/lottery](https://github.com/hjuming/lottery) |
 | Manus-AI | [https://github.com/hjuming/Manus-AI](https://github.com/hjuming/Manus-AI) |
+| map-wedo | [https://github.com/hjuming/map-wedo](https://github.com/hjuming/map-wedo) |
 | MBTI | [https://github.com/hjuming/MBTI](https://github.com/hjuming/MBTI) |
 | Miidokoro | [https://github.com/hjuming/Miidokoro](https://github.com/hjuming/Miidokoro) |
 | Moltbot | [https://github.com/hjuming/Moltbot](https://github.com/hjuming/Moltbot) |
@@ -38,6 +39,7 @@
 | sulcata | [https://github.com/hjuming/sulcata](https://github.com/hjuming/sulcata) |
 | supabase | [https://github.com/hjuming/supabase](https://github.com/hjuming/supabase) |
 | tarot | [https://github.com/hjuming/tarot](https://github.com/hjuming/tarot) |
+| tesseral | [https://github.com/hjuming/tesseral](https://github.com/hjuming/tesseral) |
 | trip | [https://github.com/hjuming/trip](https://github.com/hjuming/trip) |
 | TTL | [https://github.com/hjuming/TTL](https://github.com/hjuming/TTL) |
 | US-Export-Order | [https://github.com/hjuming/US-Export-Order](https://github.com/hjuming/US-Export-Order) |
