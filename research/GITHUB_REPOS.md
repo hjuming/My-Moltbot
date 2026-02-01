@@ -1,6 +1,6 @@
 # 🗂️ GitHub 專案總覽
 
-**更新時間**：2026-02-01 13:17
+**更新時間**：2026-02-01 13:36
 **專案總數**：46
 
 ---
@@ -31,7 +31,7 @@
 | Moltbot | 2026-01-30 | Your own personal AI assistant. Any O... | [🔗](https://github.com/hjuming/Moltbot) |
 | Moon | 2025-10-06 | 中秋節賀卡 | [🔗](https://github.com/hjuming/Moon) |
 | MoonTV | 2025-10-02 | MoonTV  一個開箱即用的、跨平台的影視聚合播放器 | [🔗](https://github.com/hjuming/MoonTV) |
-| My-Moltbot | 2026-02-01 | 活在Zeabur的龍蝦機器人 | [🔗](https://github.com/hjuming/My-Moltbot) |
+| My-Moltbot | 2026-02-01 | OpenClawd (Moltbot) 三天實測完整記錄 - Zeabur... | [🔗](https://github.com/hjuming/My-Moltbot) |
 | newebpay | 2026-01-26 | 台灣第三方金流 Skills for AI Agents - 藍新金流、綠... | [🔗](https://github.com/hjuming/newebpay) |
 | NMN | 2026-01-30 | NMN研究室：效用與安全實證探討 | [🔗](https://github.com/hjuming/NMN) |
 | OrionTV | 2025-10-28 | 一个基于 React Native TVOS 和 Expo 构建的播放器，... | [🔗](https://github.com/hjuming/OrionTV) |
