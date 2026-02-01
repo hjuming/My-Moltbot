@@ -75,20 +75,26 @@ jobs:
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
       
+      - name: Set Date
+        id: set_date
+        run: echo "today=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+      
       - name: Send Email Notification
         if: always()
+        env:
+          TODAY: ${{ steps.set_date.outputs.today }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: GitHub 專案庫監控報告 - ${{ env.TODAY }}
+          subject: GitHub 專案庫監控報告 - ${{ steps.set_date.outputs.today }}
           to: hjuming@gmail.com
           from: GitHub Actions <noreply@github.com>
           html_body: |
             <h2>🗂️ GitHub 專案庫監控報告</h2>
-            <p><strong>日期</strong>：${{ env.TODAY }}</p>
+            <p><strong>日期</strong>：${{ steps.set_date.outputs.today }}</p>
             <p><strong>專案總數</strong>：46</p>
             
             <h3>📦 專案庫變動</h3>
