@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hjuming.github.io/My-Moltbot/sitemap.xml
