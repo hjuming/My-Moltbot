@@ -303,20 +303,26 @@
         .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 25px 20px;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
         }
 
         .stat-number {
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: bold;
             margin-bottom: 10px;
+            line-height: 1.2;
         }
 
         .stat-label {
-            font-size: 1.1em;
+            font-size: 1em;
             opacity: 0.9;
         }
 
@@ -383,6 +389,14 @@
 
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-number {
+                font-size: 2em;
+            }
+
+            .stat-label {
+                font-size: 0.9em;
             }
 
             h1 {
