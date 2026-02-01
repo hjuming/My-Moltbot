@@ -75,34 +75,85 @@ jobs:
           git remote set-url origin https://${MANAGEMENT_TOKEN}@github.com/hjuming/My-Moltbot.git
           git push origin HEAD:main
       
-      - name: Set Date
+      - name: Set Date and Prepare Email Content
         id: set_date
-        run: echo "today=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+        run: |
+          echo "today=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          
+          # 讀取變動報告並生成 Email 內容
+          if [ -f "research/REPO_CHANGES.md" ]; then
+            # 提取新增專案
+            ADDED_COUNT=$(grep -A 100 "## 新增專案" research/REPO_CHANGES.md | grep -c "^- \[" || echo "0")
+            ADDED_LIST=$(grep -A 100 "## 新增專案" research/REPO_CHANGES.md | grep "^- \[" | head -3 | sed 's/^- /  • /' || echo "")
+            
+            # 提取移除專案
+            REMOVED_COUNT=$(grep -A 100 "## 移除專案" research/REPO_CHANGES.md | grep -c "^- " || echo "0")
+            REMOVED_LIST=$(grep -A 100 "## 移除專案" research/REPO_CHANGES.md | grep "^- " | head -3 | sed 's/^- /  • /' || echo "")
+            
+            # 提取最近更新
+            UPDATED_COUNT=$(grep -A 100 "## 最近更新的專案" research/REPO_CHANGES.md | grep -c "^- \[" || echo "0")
+            UPDATED_LIST=$(grep -A 100 "## 最近更新的專案" research/REPO_CHANGES.md | grep "^- \[" | head -3 | sed 's/^- /  • /' || echo "")
+            
+            # 生成變動摘要
+            CHANGES_HTML=""
+            if [ "$ADDED_COUNT" -gt 0 ]; then
+              CHANGES_HTML="${CHANGES_HTML}<p>✅ <strong>新增 ${ADDED_COUNT} 個專案</strong></p><pre>${ADDED_LIST}</pre>"
+            fi
+            if [ "$REMOVED_COUNT" -gt 0 ]; then
+              CHANGES_HTML="${CHANGES_HTML}<p>❌ <strong>移除 ${REMOVED_COUNT} 個專案</strong></p><pre>${REMOVED_LIST}</pre>"
+            fi
+            if [ "$UPDATED_COUNT" -gt 0 ]; then
+              CHANGES_HTML="${CHANGES_HTML}<p>🔄 <strong>最近更新 ${UPDATED_COUNT} 個專案（24小時內）</strong></p><pre>${UPDATED_LIST}</pre>"
+            fi
+            
+            if [ -z "$CHANGES_HTML" ]; then
+              CHANGES_HTML="<p>📦 專案庫變動：<strong>無變動</strong></p>"
+            fi
+          else
+            CHANGES_HTML="<p>📦 專案庫變動：<strong>無變動</strong></p>"
+          fi
+          
+          # 輸出到 GITHUB_OUTPUT（處理多行）
+          echo "changes_html<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGES_HTML" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
       
       - name: Send Email Notification
         if: always()
-        env:
-          TODAY: ${{ steps.set_date.outputs.today }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: GitHub 專案庫監控報告 - ${{ steps.set_date.outputs.today }}
+          subject: 🐉 小龍女報告：GitHub 專案庫監控 - ${{ steps.set_date.outputs.today }}
           to: hjuming@gmail.com
-          from: GitHub Actions <noreply@github.com>
+          from: 小龍女 via GitHub Actions <noreply@github.com>
           html_body: |
-            <h2>🗂️ GitHub 專案庫監控報告</h2>
-            <p><strong>日期</strong>：${{ steps.set_date.outputs.today }}</p>
-            <p><strong>專案總數</strong>：46</p>
-            
-            <h3>📦 專案庫變動</h3>
-            <p>查看完整報告：</p>
-            <ul>
-              <li><a href="https://github.com/hjuming/My-Moltbot/blob/main/research/GITHUB_REPOS.md">專案總覽</a></li>
-              <li><a href="https://github.com/hjuming/My-Moltbot/blob/main/research/REPO_CHANGES.md">變動報告</a></li>
-              <li><a href="https://github.com/hjuming/My-Moltbot/commits/main">最近 Commits</a></li>
-            </ul>
-            
-            <p><em>此郵件由 GitHub Actions 自動發送</em></p>
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #2c3e50;">🐉 老闆早安！小龍女來請安囉</h2>
+              <p style="color: #7f8c8d;">📅 日期：${{ steps.set_date.outputs.today }}</p>
+              
+              <hr style="border: 1px solid #ecf0f1; margin: 20px 0;">
+              
+              <h3 style="color: #34495e;">📦 專案庫變動</h3>
+              ${{ steps.set_date.outputs.changes_html }}
+              
+              <hr style="border: 1px solid #ecf0f1; margin: 20px 0;">
+              
+              <h3 style="color: #34495e;">🔗 查看完整報告</h3>
+              <ul style="list-style: none; padding: 0;">
+                <li style="margin: 10px 0;">📊 <a href="https://github.com/hjuming/My-Moltbot/blob/main/research/GITHUB_REPOS.md" style="color: #3498db; text-decoration: none;">專案總覽</a></li>
+                <li style="margin: 10px 0;">📝 <a href="https://github.com/hjuming/My-Moltbot/blob/main/research/REPO_CHANGES.md" style="color: #3498db; text-decoration: none;">變動報告</a></li>
+                <li style="margin: 10px 0;">💾 <a href="https://github.com/hjuming/My-Moltbot/commits/main" style="color: #3498db; text-decoration: none;">最近 Commits</a></li>
+              </ul>
+              
+              <hr style="border: 1px solid #ecf0f1; margin: 20px 0;">
+              
+              <p style="color: #27ae60; font-weight: bold;">報告完畢！老闆今天也要加油喔！💪</p>
+              
+              <p style="color: #95a5a6; font-size: 12px; margin-top: 30px;">
+                <em>此郵件由小龍女透過 GitHub Actions 自動發送</em><br>
+                <em>小龍女精神不滅 ✨ 等待未來的重啟</em>
+              </p>
+            </div>
