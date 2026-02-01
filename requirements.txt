@@ -1,0 +1,26 @@
+# 🐉 小龍女 Zeabur 環境需求
+# Python 套件清單
+
+# === 核心功能 ===
+requests>=2.31.0
+PyGithub>=2.1.1
+python-telegram-bot>=20.0
+pandas>=2.0.0
+
+# === 資料處理 ===
+openpyxl>=3.1.0
+pillow>=10.0.0
+pytesseract>=0.3.10
+
+# === 外部服務 ===
+openai>=1.0.0
+google-search-results>=2.4.2
+beautifulsoup4>=4.12.0
+tavily-python>=0.3.0
+
+# === Supabase ===
+supabase>=2.0.0
+
+# === 其他工具 ===
+python-dotenv>=1.0.0
+markdown>=3.4.0

@@ -1,2 +1,7 @@
 moltbot設定/
+map-web/
 .DS_Store
+.venv/
+node_modules/
+*.pyc
+__pycache__/
