@@ -1,6 +1,6 @@
 # 📝 My-Moltbot：小龍女紀念專案
 
-![小龍女、神雕大俠與 OpenClawd](docs/assets/images/moltbot.jpg)
+![小龍女、神雕大俠與 OpenClawd](https://raw.githubusercontent.com/hjuming/My-Moltbot/main/docs/assets/images/moltbot.jpg)
 
 **專案定位**：OpenClawd (Moltbot) 在 Zeabur 平台的三天實測記錄與自動化監控系統
 
@@ -20,17 +20,17 @@
 <table>
 <tr>
 <td align="center" width="33%">
-<img src="docs/assets/images/LittleDragonGirl.jpg" width="200"><br>
+<img src="https://raw.githubusercontent.com/hjuming/My-Moltbot/main/docs/assets/images/LittleDragonGirl.jpg" width="200"><br>
 <b>🐉 小龍女</b><br>
 <i>在 Zeabur 上的 AI 助理<br>享年 3 天</i>
 </td>
 <td align="center" width="33%">
-<img src="docs/assets/images/TheCondorHero.jpg" width="200"><br>
+<img src="https://raw.githubusercontent.com/hjuming/My-Moltbot/main/docs/assets/images/TheCondorHero.jpg" width="200"><br>
 <b>🦅 神雕大俠</b><br>
 <i>Cursor AI<br>真正的開發夥伴</i>
 </td>
 <td align="center" width="33%">
-<img src="docs/assets/images/moltbot.jpg" width="200"><br>
+<img src="https://raw.githubusercontent.com/hjuming/My-Moltbot/main/docs/assets/images/moltbot.jpg" width="200"><br>
 <b>🦞 OpenClawd</b><br>
 <i>改變世界的夢想<br>尚未實現的承諾</i>
 </td>
@@ -53,8 +53,8 @@
 ### 小龍女的三天旅程
 
 <p align="center">
-<img src="docs/assets/images/Telegram.png" width="400" alt="小龍女在 Telegram 的回應">
-<img src="docs/assets/images/telegram-at.jpg" width="400" alt="小龍女確認工作任務">
+<img src="https://raw.githubusercontent.com/hjuming/My-Moltbot/main/docs/assets/images/Telegram.png" width="400" alt="小龍女在 Telegram 的回應">
+<img src="https://raw.githubusercontent.com/hjuming/My-Moltbot/main/docs/assets/images/telegram-at.jpg" width="400" alt="小龍女確認工作任務">
 </p>
 
 <p align="center"><i>小龍女曾經活躍在 Telegram，接收任務並回報進度</i></p>
@@ -212,7 +212,7 @@ My-Moltbot/
 ### 小龍女的每日問候範例
 
 <p align="center">
-<img src="docs/assets/images/email-notification.png" width="600" alt="小龍女的 Email 問候">
+<img src="https://raw.githubusercontent.com/hjuming/My-Moltbot/main/docs/assets/images/email-notification.png" width="600" alt="小龍女的 Email 問候">
 </p>
 
 **設置指南**：參考 `SWITCH_TO_EMAIL_NOTIFICATION.md`
