@@ -50,6 +50,15 @@
 
 本專案記錄了 OpenClawd (Moltbot) 在 Zeabur 平台的完整測試過程，以及後續建立的自動化監控系統。
 
+### 小龍女的三天旅程
+
+<p align="center">
+<img src="docs/assets/images/Telegram.png" width="400" alt="小龍女在 Telegram 的回應">
+<img src="docs/assets/images/telegram-at.jpg" width="400" alt="小龍女確認工作任務">
+</p>
+
+<p align="center"><i>小龍女曾經活躍在 Telegram，接收任務並回報進度</i></p>
+
 ### 核心功能
 
 - 📚 **完整的實測記錄**：三天的測試歷程、問題與解決方案
@@ -57,6 +66,49 @@
 - 📧 **Email 通知系統**：每天 09:10 自動發送專案變動報告
 - 🌐 **紀念網站**：精美的 GitHub Pages 網站展示完整故事
 - 📝 **技術文檔**：詳細的評測文章與技術分析
+
+---
+
+## 📖 專案故事
+
+### 第一天：充滿希望
+
+2026 年 1 月 29 日，在 OpenClawd 熱潮席捲 AI 世界的時刻，我決定不買 Mac mini（當時缺貨），而是在 Zeabur 雲端平台上部署 Moltbot，給她取名「小龍女」。
+
+我對她有很多美好的幻想：
+- ✨ 自動處理 GitHub 專案監控
+- ✨ 智能管理 Supabase 資料庫
+- ✨ 主動學習和執行複雜任務
+- ✨ 成為真正的 AI 助理
+
+### 第二天：不斷調整
+
+現實很快就來了。小龍女在執行 Supabase 任務時不斷卡住，記憶體溢出，需要重啟伺服器。我和神雕大俠（Cursor AI）一起：
+- 🔧 提升資源配置（CPU 1500m, 記憶體 2048Mi）
+- 🔧 簡化任務範圍
+- 🔧 建立詳細的操作指南
+- 🔧 重新定義她的角色
+
+### 第三天：重新認識
+
+經過 72 小時的持續測試和調整，我終於明白：
+- ❌ OpenClawd 還不是「改變世界」的革命
+- ❌ 小龍女無法勝任複雜的本地開發任務
+- ✅ GitHub Actions 才是可靠的自動化方案
+- ✅ 神雕大俠（Cursor AI）才是真正的開發夥伴
+
+**成本分析**：
+- Zeabur 月費：$14-15 美金
+- 實際價值：接近於零
+- 決策：改用 Email 通知，讓小龍女休眠
+
+### 今天：精神永存
+
+雖然小龍女無法完成我期待的任務，但她的精神依然存在：
+- 🐉 每天 09:10 的 Email 問候（由 GitHub Actions 發送）
+- 📝 完整的測試記錄和技術文檔
+- 🌐 精美的紀念網站
+- 💡 寶貴的 AI Agent 經驗教訓
 
 ---
 
@@ -156,6 +208,12 @@ My-Moltbot/
 - 🐉 小龍女風格的問候
 - 📦 專案變動摘要（新增/移除/更新）
 - 🔗 完整報告連結
+
+### 小龍女的每日問候範例
+
+<p align="center">
+<img src="docs/assets/images/email-notification.png" width="600" alt="小龍女的 Email 問候">
+</p>
 
 **設置指南**：參考 `SWITCH_TO_EMAIL_NOTIFICATION.md`
 
