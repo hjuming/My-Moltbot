@@ -1,21 +1,15 @@
 # 📋 專案變動報告
 
-**日期**：2026-02-01 15:35
+**日期**：2026-02-02 03:47
 
-## 🔄 最近更新的專案（24小時內，共 5 個）
+## 🔄 最近更新的專案（24小時內，共 3 個）
 
-- **My-Moltbot** - 不到1小時前
-  - https://github.com/hjuming/My-Moltbot
-
-- **wedo-website** - 不到1小時前
+- **wedo-website** - 9小時前
   - https://github.com/hjuming/wedo-website
 
-- **map-wedo** - 6小時前
+- **My-Moltbot** - 12小時前
+  - https://github.com/hjuming/My-Moltbot
+
+- **map-wedo** - 18小時前
   - https://github.com/hjuming/map-wedo
-
-- **tesseral** - 16小時前
-  - https://github.com/hjuming/tesseral
-
-- **trip** - 19小時前
-  - https://github.com/hjuming/trip
 
