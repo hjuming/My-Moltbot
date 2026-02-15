@@ -1,7 +1,7 @@
 # 🗂️ GitHub 專案總覽
 
-**更新時間**：2026-02-14 03:36
-**專案總數**：49
+**更新時間**：2026-02-15 03:48
+**專案總數**：50
 
 ---
 
@@ -11,6 +11,7 @@
 | AI-PM-Designer-Pro | 2025-11-22 | 一位頂尖的 AI 品牌視覺總監，可協助完整生成產品介紹文案圖。An AI-... | [🔗](https://github.com/hjuming/AI-PM-Designer-Pro) |
 | Artgo | 2025-11-09 | Artgo Cafe 雅鴿書院 日式料理 極上總督盛宴 | [🔗](https://github.com/hjuming/Artgo) |
 | Atlas-WEDO | 2025-12-19 | 探索一個地方，完成一趟旅程。Atlas-WEDO 為你整理目的地的每一個關鍵細節 | [🔗](https://github.com/hjuming/Atlas-WEDO) |
+| AudioGuard-AI | 2026-02-14 | 檢測聲音真偽 上傳音訊或直接錄音，系統將分析音頻特徵 (RMS/ZCR) ... | [🔗](https://github.com/hjuming/AudioGuard-AI) |
 | awesome-gpt4o-images | 2026-01-06 | Awesome curated collection of images ... | [🔗](https://github.com/hjuming/awesome-gpt4o-images) |
 | Awesome-Nano-Banana-images | 2026-01-06 | A curated collection of fun and creat... | [🔗](https://github.com/hjuming/Awesome-Nano-Banana-images) |
 | book-wedo | 2026-01-08 | AI 時代創業手冊 | [🔗](https://github.com/hjuming/book-wedo) |
@@ -31,7 +32,7 @@
 | Moltbot | 2026-01-30 | Your own personal AI assistant. Any O... | [🔗](https://github.com/hjuming/Moltbot) |
 | Moon | 2025-10-06 | 中秋節賀卡 | [🔗](https://github.com/hjuming/Moon) |
 | MoonTV | 2025-10-02 | MoonTV  一個開箱即用的、跨平台的影視聚合播放器 | [🔗](https://github.com/hjuming/MoonTV) |
-| My-Moltbot | 2026-02-13 | OpenClawd (Moltbot) 三天實測完整記錄 - Zeabur... | [🔗](https://github.com/hjuming/My-Moltbot) |
+| My-Moltbot | 2026-02-14 | OpenClawd (Moltbot) 三天實測完整記錄 - Zeabur... | [🔗](https://github.com/hjuming/My-Moltbot) |
 | newebpay | 2026-01-26 | 台灣第三方金流 Skills for AI Agents - 藍新金流、綠... | [🔗](https://github.com/hjuming/newebpay) |
 | NMN | 2026-01-30 | NMN研究室：效用與安全實證探討 | [🔗](https://github.com/hjuming/NMN) |
 | OrionTV | 2025-10-28 | 一个基于 React Native TVOS 和 Expo 构建的播放器，... | [🔗](https://github.com/hjuming/OrionTV) |
@@ -53,6 +54,6 @@
 | TTL | 2026-01-23 | 風土台灣 Terroir Taiwan | [🔗](https://github.com/hjuming/TTL) |
 | tutorial | 2026-02-10 | 無描述 | [🔗](https://github.com/hjuming/tutorial) |
 | US-Export-Order | 2025-11-04 | US Export Order | [🔗](https://github.com/hjuming/US-Export-Order) |
-| wedo-website | 2026-02-13 | The Best Things We Do | [🔗](https://github.com/hjuming/wedo-website) |
+| wedo-website | 2026-02-14 | The Best Things We Do | [🔗](https://github.com/hjuming/wedo-website) |
 | Xiaoliuqiu | 2025-12-23 | 嶼野山隱訂房確認 | [🔗](https://github.com/hjuming/Xiaoliuqiu) |
 | ZHO-nano-banana-Creation | 2026-01-06 | 我的 nano-banana 创意玩法大合集！  持续更新中！ | [🔗](https://github.com/hjuming/ZHO-nano-banana-Creation) |
