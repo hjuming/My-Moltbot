@@ -1,7 +1,7 @@
 # 🗂️ GitHub 專案總覽
 
-**更新時間**：2026-03-24 03:42
-**專案總數**：56
+**更新時間**：2026-03-25 03:45
+**專案總數**：57
 
 ---
 
@@ -15,6 +15,7 @@
 | awesome-gpt4o-images | 2026-01-06 | Awesome curated collection of images ... | [🔗](https://github.com/hjuming/awesome-gpt4o-images) |
 | Awesome-Nano-Banana-images | 2026-01-06 | A curated collection of fun and creat... | [🔗](https://github.com/hjuming/Awesome-Nano-Banana-images) |
 | book-wedo | 2026-03-23 | AI 時代創業手冊 | [🔗](https://github.com/hjuming/book-wedo) |
+| care-wedo | 2026-03-24 | 銀髮智慧照護助手 | [🔗](https://github.com/hjuming/care-wedo) |
 | chronoframe | 2025-11-10 | Self-hosted personal gallery applicat... | [🔗](https://github.com/hjuming/chronoframe) |
 | cli-anything | 2026-03-12 | CLI-Anything: Making ALL Software Age... | [🔗](https://github.com/hjuming/cli-anything) |
 | Contact-WEDO | 2026-03-17 | Contact WEDO | 智能人脈管理系統 > 以六度分隔理論把名片盒... | [🔗](https://github.com/hjuming/Contact-WEDO) |
@@ -35,7 +36,7 @@
 | Moltbot | 2026-01-30 | Your own personal AI assistant. Any O... | [🔗](https://github.com/hjuming/Moltbot) |
 | Moon | 2025-10-06 | 中秋節賀卡 | [🔗](https://github.com/hjuming/Moon) |
 | MoonTV | 2025-10-02 | MoonTV  一個開箱即用的、跨平台的影視聚合播放器 | [🔗](https://github.com/hjuming/MoonTV) |
-| My-Moltbot | 2026-03-23 | OpenClawd (Moltbot) 三天實測完整記錄 - Zeabur... | [🔗](https://github.com/hjuming/My-Moltbot) |
+| My-Moltbot | 2026-03-24 | OpenClawd (Moltbot) 三天實測完整記錄 - Zeabur... | [🔗](https://github.com/hjuming/My-Moltbot) |
 | newebpay | 2026-01-26 | 台灣第三方金流 Skills for AI Agents - 藍新金流、綠... | [🔗](https://github.com/hjuming/newebpay) |
 | NMN | 2026-01-30 | NMN研究室：效用與安全實證探討 | [🔗](https://github.com/hjuming/NMN) |
 | notebooklm-py | 2026-03-10 | Unofficial Python API and agentic ski... | [🔗](https://github.com/hjuming/notebooklm-py) |
@@ -60,6 +61,6 @@
 | tutorial | 2026-02-10 | 無描述 | [🔗](https://github.com/hjuming/tutorial) |
 | US-Export-Order | 2025-11-04 | US Export Order | [🔗](https://github.com/hjuming/US-Export-Order) |
 | USBEEF | 2026-03-11 | 2026 Women's Health Fit Fest 美力綠動節 - ... | [🔗](https://github.com/hjuming/USBEEF) |
-| wedo-website | 2026-03-23 | The Best Things We Do | [🔗](https://github.com/hjuming/wedo-website) |
+| wedo-website | 2026-03-24 | The Best Things We Do | [🔗](https://github.com/hjuming/wedo-website) |
 | Xiaoliuqiu | 2025-12-23 | 嶼野山隱訂房確認 | [🔗](https://github.com/hjuming/Xiaoliuqiu) |
 | ZHO-nano-banana-Creation | 2026-01-06 | 我的 nano-banana 创意玩法大合集！  持续更新中！ | [🔗](https://github.com/hjuming/ZHO-nano-banana-Creation) |
