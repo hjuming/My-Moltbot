@@ -1,6 +1,6 @@
 # 📋 專案變動報告
 
-**日期**：2026-04-03 04:01
+**日期**：2026-04-04 03:42
 
 ## ✅ 新增專案（1）
 
@@ -13,8 +13,14 @@
 
 - 2026-03-17
 
-## 🔄 最近更新的專案（24小時內，共 1 個）
+## 🔄 最近更新的專案（24小時內，共 3 個）
 
-- **wedo-website** - 10小時前
+- **wedo-website** - 1小時前
   - https://github.com/hjuming/wedo-website
+
+- **hino** - 5小時前
+  - https://github.com/hjuming/hino
+
+- **My-Moltbot** - 23小時前
+  - https://github.com/hjuming/My-Moltbot
 
