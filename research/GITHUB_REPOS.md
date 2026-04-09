@@ -1,13 +1,13 @@
 # 🗂️ GitHub 專案總覽
 
-**更新時間**：2026-04-08 04:07
-**專案總數**：60
+**更新時間**：2026-04-09 04:03
+**專案總數**：61
 
 ---
 
 | 專案名稱 | 最後更新 | 簡介 | 連結 |
 | :--- | :--- | :--- | :--- |
-| 1150407 | 2026-04-07 | 無描述 | [🔗](https://github.com/hjuming/1150407) |
+| 1150407 | 2026-04-09 | 無描述 | [🔗](https://github.com/hjuming/1150407) |
 | ai-deploy-notebook | 2025-11-03 | 我的 AI 助理學習筆記 | [🔗](https://github.com/hjuming/ai-deploy-notebook) |
 | AI-PM-Designer-Pro | 2025-11-22 | 一位頂尖的 AI 品牌視覺總監，可協助完整生成產品介紹文案圖。An AI-... | [🔗](https://github.com/hjuming/AI-PM-Designer-Pro) |
 | Artgo | 2025-11-09 | Artgo Cafe 雅鴿書院 日式料理 極上總督盛宴 | [🔗](https://github.com/hjuming/Artgo) |
@@ -30,6 +30,7 @@
 | Humanizer-zh-TW | 2026-01-21 | Humanizer 的繁體中文版本，Agent Skills，專門去除文字... | [🔗](https://github.com/hjuming/Humanizer-zh-TW) |
 | JSimages | 2025-11-10 | 基于 Cloudflare R2 储存的图床/视频床服务 | [🔗](https://github.com/hjuming/JSimages) |
 | kazumi | 2025-11-10 | 基于自定义规则的番剧采集APP，支持流媒体在线观看，支持弹幕，支持实时超分辨率。 | [🔗](https://github.com/hjuming/kazumi) |
+| LexShield-WEDO | 2026-04-08 | LexShield — AI 法律攻防分析系統 | [🔗](https://github.com/hjuming/LexShield-WEDO) |
 | lottery | 2026-01-26 | 大樂透走勢分佈圖 + 候選池生成器 | [🔗](https://github.com/hjuming/lottery) |
 | Manus-AI | 2025-10-02 | 如何使用Manus AI串接GitHub，將專案部署到 Cloudflar... | [🔗](https://github.com/hjuming/Manus-AI) |
 | map-wedo | 2026-02-01 | 無描述 | [🔗](https://github.com/hjuming/map-wedo) |
@@ -38,7 +39,7 @@
 | Moltbot | 2026-01-30 | Your own personal AI assistant. Any O... | [🔗](https://github.com/hjuming/Moltbot) |
 | Moon | 2025-10-06 | 中秋節賀卡 | [🔗](https://github.com/hjuming/Moon) |
 | MoonTV | 2025-10-02 | MoonTV  一個開箱即用的、跨平台的影視聚合播放器 | [🔗](https://github.com/hjuming/MoonTV) |
-| My-Moltbot | 2026-04-07 | OpenClawd (Moltbot) 三天實測完整記錄 - Zeabur... | [🔗](https://github.com/hjuming/My-Moltbot) |
+| My-Moltbot | 2026-04-08 | OpenClawd (Moltbot) 三天實測完整記錄 - Zeabur... | [🔗](https://github.com/hjuming/My-Moltbot) |
 | newebpay | 2026-01-26 | 台灣第三方金流 Skills for AI Agents - 藍新金流、綠... | [🔗](https://github.com/hjuming/newebpay) |
 | NMN | 2026-01-30 | NMN研究室：效用與安全實證探討 | [🔗](https://github.com/hjuming/NMN) |
 | notebooklm-py | 2026-03-10 | Unofficial Python API and agentic ski... | [🔗](https://github.com/hjuming/notebooklm-py) |
@@ -64,6 +65,6 @@
 | tutorial | 2026-02-10 | 無描述 | [🔗](https://github.com/hjuming/tutorial) |
 | US-Export-Order | 2025-11-04 | US Export Order | [🔗](https://github.com/hjuming/US-Export-Order) |
 | USBEEF | 2026-03-26 | 2026 Women's Health Fit Fest 美力綠動節 - ... | [🔗](https://github.com/hjuming/USBEEF) |
-| wedo-website | 2026-04-07 | The Best Things We Do | [🔗](https://github.com/hjuming/wedo-website) |
+| wedo-website | 2026-04-08 | The Best Things We Do | [🔗](https://github.com/hjuming/wedo-website) |
 | Xiaoliuqiu | 2026-04-02 | 嶼野山隱訂房確認 | [🔗](https://github.com/hjuming/Xiaoliuqiu) |
 | ZHO-nano-banana-Creation | 2026-01-06 | 我的 nano-banana 创意玩法大合集！  持续更新中！ | [🔗](https://github.com/hjuming/ZHO-nano-banana-Creation) |
